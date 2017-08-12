@@ -12,8 +12,8 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 
-@app.route("/")
-@app.route("/hello")
+@app.route('/')
+@app.route('/hello')
 def HelloWorld():
     restaurant = session.query(Restaurant).first()
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
@@ -25,6 +25,4 @@ def HelloWorld():
 
 if __name__ == '__main__':
     app.debug = True
-    app.run(host = '0.0.0.0', port = 5000)
-    
-    
+    app.run(host='0.0.0.0', port=5000)
