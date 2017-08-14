@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Restaurant, MenuItem
@@ -25,6 +25,7 @@ def newMenuItem(restaurant_id):
         newItem = MenuItem(name = request.form['name'], restaurant_id = restaurant_id)
         session.add(newItem)
         session.commit()
+        flash(request.form['name'] + " menu item created!")
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
     return render_template('new_menu_item.html', restaurant_id = restaurant_id)
 
@@ -36,6 +37,7 @@ def editMenuItem(restaurant_id, menu_id):
             editedItem.name = request.form['name']
         session.add(editedItem)
         session.commit()
+        flash(request.form['name'] + " menu item edited!")
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
     else:
         return render_template('edit_menu_item.html', restaurant_id = restaurant_id, menu_id = menu_id, item = editedItem)
@@ -47,9 +49,11 @@ def deleteMenuItem(restaurant_id, menu_id):
     if request.method == 'POST':
         session.delete(itemToBeDelete)
         session.commit()
+        flash(itemToBeDelete.name + " menu item deleted!")
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
     return render_template('delete_menu_item.html', restaurant_id = restaurant_id, menu_id = menu_id, item = itemToBeDelete)
 
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)
