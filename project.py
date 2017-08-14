@@ -39,8 +39,7 @@ def editMenuItem(restaurant_id, menu_id):
         session.commit()
         flash(request.form['name'] + " menu item edited!")
         return redirect(url_for('restaurantMenu', restaurant_id = restaurant_id))
-    else:
-        return render_template('edit_menu_item.html', restaurant_id = restaurant_id, menu_id = menu_id, item = editedItem)
+    return render_template('edit_menu_item.html', restaurant_id = restaurant_id, menu_id = menu_id, item = editedItem)
 
 
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete/', methods = ['GET', 'POST'])
